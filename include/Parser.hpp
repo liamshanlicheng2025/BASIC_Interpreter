@@ -1,0 +1,57 @@
+#pragma once
+
+#include <memory>
+#include <optional>
+
+#include "Token.hpp"
+
+class Statement;
+class Expression;
+
+class ParsedLine {
+private:
+    int line_number_;
+    bool has_line_number_;
+    Statement* statement_;
+
+public:
+    ParsedLine();
+    ~ParsedLine();
+
+    void setLine(int line);
+    bool hasLine() const;
+    int getLine() const;
+    void setStatement(Statement* stmt);
+    Statement* getStatement() const;
+    Statement* fetchStatement();
+};
+
+class Parser {
+public:
+    ParsedLine parseLine(TokenStream& tokens,
+                         const std::string& originLine) const;
+
+private:
+    Statement* parseStatement(TokenStream& tokens,
+                              const std::string& originLine) const;
+    Statement* parseLet(TokenStream& tokens, const std::string& originLine) const;
+    Statement* parsePrint(TokenStream& tokens,
+                          const std::string& originLine) const;
+    Statement* parseInput(TokenStream& tokens,
+                          const std::string& originLine) const;
+    Statement* parseGoto(TokenStream& tokens,
+                         const std::string& originLine) const;
+    Statement* parseIf(TokenStream& tokens, const std::string& originLine) const;
+    Statement* parseRem(TokenStream& tokens, const std::string& originLine) const;
+    Statement* parseEnd(TokenStream& tokens, const std::string& originLine) const;
+
+    Expression* parseExpression(TokenStream& tokens) const;
+    Expression* parseExpression(TokenStream& tokens, int precedence) const;
+
+    int getPrecedence(TokenType op) const;
+    int parseLiteral(const Token* token) const;
+
+    mutable int leftParentCount{0};
+};
+// Created by Lenovo on 2025/11/19.
+//
