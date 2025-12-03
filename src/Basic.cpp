@@ -10,21 +10,17 @@
 #include "../include/Token.hpp"
 bool isImmediateCommand(const std::string& line) {
   if (line.empty()) return false;
-
   // 跳过前导空格
   size_t start = 0;
   while (start < line.length() && std::isspace(line[start])) {
     start++;
   }
-
   // 检查第一个单词是否为命令
   size_t end = start;
   while (end < line.length() && std::isalpha(line[end])) {
     end++;
   }
-
   std::string firstWord = line.substr(start, end - start);
-
   return (firstWord == "RUN" || firstWord == "LIST" || firstWord == "CLEAR" ||
           firstWord == "QUIT" || firstWord == "HELP");
 }
@@ -33,11 +29,9 @@ bool isImmediateCommand(const std::string& line) {
 bool handleImmediateCommand(const std::string& line, Program& program, bool& shouldQuit) {
   Lexer lexer;
   TokenStream tokens = lexer.tokenize(line);
-
   if (tokens.empty()) {
     return false;
   }
-
   const Token* firstToken = tokens.get();
   if (!firstToken) {
     return false;
@@ -60,7 +54,6 @@ bool handleImmediateCommand(const std::string& line, Program& program, bool& sho
     default:
       return false; // 不是立即执行命令
   }
-
   return true;
 }
 
@@ -72,13 +65,11 @@ int main() {
   std::string line;
   while (!shouldQuit) {
     if (!std::getline(std::cin, line)) {
-      break; // EOF或读取错误
+      break; 
     }
-
     if (line.empty()) {
       continue;
     }
-
     try {
       // 检查是否为立即执行命令
       if (isImmediateCommand(line)) {
@@ -86,10 +77,7 @@ int main() {
           continue;
         }
       }
-
-      // 词法分析
       TokenStream tokens = lexer.tokenize(line);
-      // 语法分析
       ParsedLine parsedLine = parser.parseLine(tokens, line);
       // 处理解析结果
       bool hasLine = parsedLine.hasLine();
@@ -98,14 +86,12 @@ int main() {
       if (hasLine) {
         //有行号的情况
         if (stmt) {
-          // 添加或替换语句
           program.addStmt(lineNumber, stmt);
         } else {
-          // 删除语句（只有行号没有语句）
           program.removeStmt(lineNumber);
         }
       } else {
-        // 没有行号的情况 - 立即执行语句
+        // 没有行号的情况
         if (stmt) {
           try {
             program.execute(stmt);
@@ -118,7 +104,6 @@ int main() {
           throw BasicError("Empty statement");
         }
       }
-
     } catch (const BasicError& e) {
       std::cout << e.message() << std::endl;
     } catch (const std::exception& e) {
