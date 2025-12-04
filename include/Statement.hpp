@@ -87,6 +87,18 @@ public:
     EndStmt(const std::string& source);
     void execute(VarState& state, Program& program) const override;
 };
+
+class IndentStmt : public Statement {
+public:
+    IndentStmt(const std::string& source);
+    void execute(VarState& state, Program& program) const override;
+};
+
+class DedentStmt : public Statement {
+public:
+    DedentStmt(const std::string& source);
+    void execute(VarState& state, Program& program) const override;
+};
 // TODO: Other statement types derived from Statement, e.g., GOTOStatement,
 // LetStatement, etc.
 // Created by Lenovo on 2025/11/19.
