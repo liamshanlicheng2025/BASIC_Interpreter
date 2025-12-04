@@ -22,7 +22,7 @@ bool isImmediateCommand(const std::string& line) {
   }
   std::string firstWord = line.substr(start, end - start);
   return (firstWord == "RUN" || firstWord == "LIST" || firstWord == "CLEAR" ||
-          firstWord == "QUIT" || firstWord == "HELP");
+          firstWord == "QUIT" || firstWord == "HELP" || firstWord == "INDENT" || firstWord == "DEDENT");
 }
 
 // 处理立即执行命令
