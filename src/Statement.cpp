@@ -93,6 +93,18 @@ EndStmt::EndStmt(const std::string& source) : Statement(source){}
 void EndStmt::execute(VarState& state, Program& program) const {
     program.programEnd();
 }
+
+IndentStmt::IndentStmt(const std::string& source) : Statement(source) {}
+
+void IndentStmt::execute(VarState& state, Program& program) const {
+    state.enterScope();
+}
+
+DedentStmt::DedentStmt(const std::string& source) : Statement(source) {}
+
+void DedentStmt::execute(VarState& state, Program& program) const {
+    state.exitScope();
+}
 // TODO: Imply interfaces declared in the Statement.hpp.
 // Created by Lenovo on 2025/11/19.
 //
