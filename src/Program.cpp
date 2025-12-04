@@ -19,6 +19,7 @@ void Program::run(){
     try {
         programCounter_ = -1;
         programEnd_ = false;
+        vars_.clear(); //重置作用域
         int first_line = findFirstLine();
         if (first_line == -1){
             return;
